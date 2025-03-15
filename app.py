@@ -1,8 +1,9 @@
 from flask import Flask, request, render_template
 import sqlite3
 import random
+import os
 
-app = Flask(__name__, template_folder='../templates', static_folder='../static')
+app = Flask(__name__)
 
 # All questions from Networking 101 note (50 total, covering everything)
 QUESTIONS = [
@@ -190,7 +191,7 @@ PRAISES = [
 ]
 
 def init_db():
-    conn = sqlite3.connect(':memory:')
+    conn = sqlite3.connect('quiz.db')  # Disk-based SQLite
     c = conn.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS attempts 
                 (id INTEGER PRIMARY KEY, question TEXT, qtype TEXT, answer TEXT, user_answer TEXT, correct INTEGER)''')
@@ -212,7 +213,7 @@ def start():
 @app.route('/submit_quiz', methods=['POST'])
 def submit_quiz():
     global selected_questions
-    conn = sqlite3.connect(':memory:')
+    conn = sqlite3.connect('quiz.db')
     c = conn.cursor()
     qtype = request.form['qtype']
     num_questions = int(request.form['num_questions'])
@@ -257,9 +258,8 @@ def retry():
             failed_questions.append(q)
     return render_template('quiz.html', questions=failed_questions, qtype=qtype, num_questions=len(failed_questions))
 
-# Vercel requires this handler
 if __name__ == '__main__':
-    init_db()
-    app.run(debug=True)
-else:
-    init_db()  # Ensure DB is ready for Vercel
+    if not os.path.exists('quiz.db'):
+        init_db()
+    port = int(os.environ.get("PORT", 5000))  # Render uses PORT env
+    app.run(host="0.0.0.0", port=port, debug=True)
