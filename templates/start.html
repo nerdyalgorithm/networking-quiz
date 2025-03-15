@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Networking 101 Quiz</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Networking study Quiz</h1>
+    <form method="POST">
+        <label>Choose Quiz Type:</label><br>
+        <select name="qtype">
+            <option value="objective">Objective (Multiple Choice)</option>
+            <option value="theory">Theory (Self-Graded)</option>
+        </select><br>
+        <label>Number of Questions (1-50):</label><br>
+        <input type="number" name="num_questions" min="1" max="50" value="10"><br>
+        <input type="submit" value="Start Quiz">
+    </form>
+    <footer>
+        <p>Created by Angelic 💕</p>
+    </footer>
+</body>
+</html>

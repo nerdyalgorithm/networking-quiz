@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quiz Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Results</h1>
+    <p>Your Score: {{ score }} / {{ total }}</p>
+    <p>{{ feedback }}</p>
+    {% if failed %}
+        <h2>Failed Questions</h2>
+        <form method="POST" action="/retry">
+            <input type="hidden" name="qtype" value="{{ qtype }}">
+            <input type="hidden" name="num_questions" value="{{ total }}">
+            {% for f in failed %}
+                <p>{{ f.obj_q if qtype == 'objective' else f.theory_q }}</p>
+                {% if qtype == 'objective' %}
+                    <p>Correct Answer: {{ f.obj_answer }}</p>
+                {% endif %}
+                <input type="hidden" name="failed_q_{{ loop.index0 }}" value="{{ f.obj_q if qtype == 'objective' else f.theory_q }}">
+            {% endfor %}
+            <input type="submit" value="Retry Failed Questions">
+        </form>
+    {% endif %}
+</body>
+</html>

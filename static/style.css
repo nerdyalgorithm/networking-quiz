@@ -1,0 +1,56 @@
+body {
+    background-color: #f2dad8;
+    font-family: Arial, sans-serif;
+    color: #cf2c89;
+    text-align: center;
+    padding: 20px;
+    min-height: 100vh; /* Ensures footer stays at bottom if content is short */
+    display: flex;
+    flex-direction: column;
+}
+
+h1 {
+    color: #cf2c89;
+}
+
+form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    display: inline-block;
+}
+
+input[type="submit"] {
+    background-color: #cf2c89;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #b02476;
+}
+
+.question {
+    margin: 20px 0;
+    text-align: left;
+}
+
+select, input[type="number"] {
+    margin: 10px 0;
+}
+
+.feedback {
+    font-size: 14px;
+    margin-top: 5px;
+    display: block;
+}
+
+footer {
+    margin-top: auto; /* Pushes footer to bottom */
+    padding: 10px;
+    font-size: 14px;
+    color: #cf2c89;
+}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Networking 101 Quiz</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Networking 101 Quiz</h1>
+    <form method="POST" action="/submit_quiz">
+        <input type="hidden" name="qtype" value="{{ qtype }}">
+        <input type="hidden" name="num_questions" value="{{ num_questions }}">
+        {% for q in questions %}
+            <div class="question">
+                <p>{{ loop.index }}. {{ q.obj_q if qtype == 'objective' else q.theory_q }}</p>
+                <input type="hidden" name="q_id_{{ loop.index0 }}" value="{{ q.id }}">
+                {% if qtype == 'objective' %}
+                    {% for opt in q.options %}
+                        <input type="radio" name="answer_{{ q.id }}" value="{{ opt }}" onchange="checkAnswer({{ q.id }}, '{{ opt }}', '{{ q.obj_answer }}')"> {{ opt }}<br>
+                    {% endfor %}
+                    <span id="feedback_{{ q.id }}" class="feedback"></span>
+                {% else %}
+                    <input type="radio" name="answer_{{ q.id }}" value="got_it"> Got it<br>
+                    <input type="radio" name="answer_{{ q.id }}" value="failed"> Failed it<br>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <input type="submit" value="Submit Quiz">
+    </form>
+    <script>
+        function checkAnswer(id, selected, correct) {
+            let feedback = document.getElementById('feedback_' + id);
+            if (selected === correct) {
+                feedback.innerHTML = "Correct!";
+                feedback.style.color = "#28a745";
+            } else {
+                feedback.innerHTML = "Wrong! Correct answer: " + correct;
+                feedback.style.color = "#cf2c89";
+            }
+        }
+    </script>
+</body>
+</html>
